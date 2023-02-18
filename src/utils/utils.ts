@@ -1,4 +1,4 @@
-import { TMovie, TMovieList } from "../Movies/types";
+import { TMovie, TMovieList } from "../components/Movies/types";
 
 const getRandomDate = (): string => {
   const start = new Date(2023, 0, 1);
