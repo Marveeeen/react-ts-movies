@@ -5,10 +5,10 @@ import { useAxiosHandler } from "./hooks/useAxiosHandler";
 
 import { Section, Button } from "./styles";
 
+const apiUrl: string = import.meta.env.VITE_API_FILMS_URL;
+
 const App = () => {
-  const { axiosState, axiosHandler } = useAxiosHandler(
-    "https://swapi.dev/api/films"
-  );
+  const { axiosState, axiosHandler } = useAxiosHandler(apiUrl);
 
   const { movieList, isLoading, error } = axiosState;
   const { fetchHandler } = axiosHandler;
