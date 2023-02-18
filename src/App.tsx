@@ -1,30 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import MovieList from "./components/Movies";
-import { TMovieList } from "./components/Movies/types";
-import { generateMockMovieList } from "./components/utils/utils";
+import { useAxiosHandler } from "./hooks/useAxiosHandler";
 
 import { Section, Button } from "./styles";
 
 const App = () => {
-  const [movieList, setMovieList] = useState<TMovieList>([]);
+  const { axiosState, axiosHandler } = useAxiosHandler(
+    "https://swapi.dev/api/films"
+  );
 
-  useEffect(() => {
-    setMovieList(generateMockMovieList(20));
-  }, []);
+  const { movieList, isLoading, error } = axiosState;
+  const { fetchHandler } = axiosHandler;
 
-  const fetchHandler = () => {
-    setMovieList(generateMockMovieList(Math.floor((Math.random() * 20) + 1)));
-  };
+  let content: JSX.Element = <p>No movie list found.</p>;
+
+  if (movieList.length > 0) {
+    content = <MovieList movieList={movieList} />;
+  }
+
+  if (error) {
+    content = <p>Something went wrong!</p>;
+  }
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
 
   return (
     <React.Fragment>
       <Section>
         <Button onClick={fetchHandler}>Fetch movies</Button>
       </Section>
-      <Section>
-        <MovieList movieList={movieList} />
-      </Section>
+      <Section>{content}</Section>
     </React.Fragment>
   );
 };
